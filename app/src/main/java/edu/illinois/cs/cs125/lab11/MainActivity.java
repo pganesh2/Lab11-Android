@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -62,12 +63,20 @@ public final class MainActivity extends AppCompatActivity {
     void startAPICall() {
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+            final JSONObject jsonBody = new JSONObject("{\"type\":\"example\"}");
+            Request.Method.POST,
+                    "https://api.coindesk.com/v1/bpi/historical/close.json",
+                    jsonBody,
+
                     Request.Method.GET,
-                    "",
+                    "https://api.coindesk.com/v1/bpi/historical/close.json?start=2013-09-01&end=2013-09-05",
                     null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(final JSONObject response) {
+                            setContentView(R.layout.activity_main);
+                            final TextView helloTextView = (TextView) findViewById(R.id.jsonResult);
+                            helloTextView.setText(response.toString());
                             Log.d(TAG, response.toString());
                         }
                     }, new Response.ErrorListener() {
